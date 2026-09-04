@@ -22,6 +22,11 @@ jobs:
         run: |
           pip install beautifulsoup4 curl_cffi
 
+      - name: Check PDP Real Content
+        run: |
+          curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" \
+            "https://arcteryx.com/fr/fr/shop/womens/gamma-mx-hoody-9456" | grep -o "Gamma Mx Hoody" | head -n 1 || echo "Blocked by JS Shield" 
+            
       - name: Run Stock Scraper
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
