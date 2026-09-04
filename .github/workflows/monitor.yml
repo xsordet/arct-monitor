@@ -25,10 +25,10 @@ jobs:
       - name: 安装依赖
         run: pip install -r requirements.txt
 
-      - name: Test PDP Access in GitHub Runner
+      - name: Check PDP Real Content
         run: |
-          curl -I -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" \
-            "https://arcteryx.com/fr/fr/shop/womens/elec-insulated-jacket-9512" | head -n 5
+          curl -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" \
+            "https://arcteryx.com/fr/fr/shop/womens/elec-insulated-jacket-9512" | grep -o "Elec Insulated Jacket" | head -n 1 || echo "Blocked by JS Shield"
             
       - name: 运行监控脚本
         env:
