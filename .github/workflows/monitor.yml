@@ -3,7 +3,7 @@ name: Arcteryx Stock Monitor
 on:
   schedule:
     # 每 15 分钟运行一次 (GitHub Actions Cron 最短建议间隔为 5-15 分钟)
-    - cron: '*/15 * * * *'
+    - cron: '*/59 * * * *'
   workflow_dispatch: # 允许在 GitHub 网页上随时点击按钮手动运行测试
 
 jobs:
