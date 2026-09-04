@@ -31,9 +31,9 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase
           if [ -f state_stock.json ]; then
             git add state_stock.json
             git commit -m "Update stock monitor state [skip ci]" || exit 0
+            git pull --rebase
             git push
           fi
