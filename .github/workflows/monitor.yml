@@ -1,0 +1,38 @@
+name: Arcteryx Stock Monitor
+
+on:
+  schedule:
+    # 每 15 分钟运行一次 (GitHub Actions Cron 最短建议间隔为 5-15 分钟)
+    - cron: '*/15 * * * *'
+  workflow_dispatch: # 允许在 GitHub 网页上随时点击按钮手动运行测试
+
+jobs:
+  check-stock:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 必须赋予写入权限，用于将更新后的 state.json push 回仓库
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python 运行环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: 安装依赖
+        run: pip install -r requirements.txt
+
+      - name: 运行监控脚本
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python monitor.py
+
+      - name: 提交并推送状态更新 (如果有变动)
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add state.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update inventory state [skip ci]" && git push)
