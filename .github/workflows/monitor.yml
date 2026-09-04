@@ -25,6 +25,11 @@ jobs:
       - name: 安装依赖
         run: pip install -r requirements.txt
 
+      - name: Test PDP Access in GitHub Runner
+        run: |
+          curl -I -s -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36" \
+            "https://arcteryx.com/fr/fr/shop/womens/elec-insulated-jacket-9512" | head -n 5
+            
       - name: 运行监控脚本
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
